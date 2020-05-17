@@ -40,7 +40,7 @@ class AppointmentController {
     });
 
     if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validationfails' });
+      return res.status(400).json({ error: 'Validation fails' });
     }
     const { provider_id, date } = req.body;
 
@@ -59,7 +59,7 @@ class AppointmentController {
     const hourStart = startOfHour(parseISO(date));
 
     if (isBefore(hourStart, new Date())) {
-      return res.status(401).json({ error: 'Past dates are not permitted' });
+      return res.status(400).json({ error: 'Past dates are not permitted' });
     }
 
     /* Check date availability */
@@ -73,7 +73,7 @@ class AppointmentController {
 
     if (checkAvailability) {
       return res
-        .status(401)
+        .status(400)
         .json({ error: 'Appointment date is not Availability' });
     }
     const appointment = await Appointment.create({
